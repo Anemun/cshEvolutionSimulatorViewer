@@ -22,18 +22,23 @@ public static partial class DataReflection {
   static DataReflection() {
     byte[] descriptorData = global::System.Convert.FromBase64String(
         string.Concat(
-          "CgpkYXRhLnByb3RvIj8KDENodW5rTWVzc2FnZRISCgpjaHVua0luZGV4GAEg",
-          "ASgNEhsKBXRpY2tzGAIgAygLMgwuVGlja01lc3NhZ2UiOwoLVGlja01lc3Nh",
-          "Z2USEQoJdGlja0luZGV4GAEgASgEEhkKBGJvdHMYAiADKAsyCy5Cb3RNZXNz",
-          "YWdlIlsKCkJvdE1lc3NhZ2USDQoFaW5kZXgYASABKAQSDgoGY29vcmRYGAIg",
-          "ASgNEg4KBmNvb3JkWRgDIAEoDRIOCgZlbmVyZ3kYBCABKA0SDgoGZ2Vub21l",
-          "GAUgASgMQghaBi47bWFpbmIGcHJvdG8z"));
+          "CgpkYXRhLnByb3RvImcKDENodW5rTWVzc2FnZRISCgpjaHVua0luZGV4GAEg",
+          "ASgNEhIKCndvcmxkU2l6ZVgYAiABKA0SEgoKd29ybGRTaXplWRgDIAEoDRIb",
+          "CgV0aWNrcxgEIAMoCzIMLlRpY2tNZXNzYWdlIjsKC1RpY2tNZXNzYWdlEhEK",
+          "CXRpY2tJbmRleBgBIAEoBBIZCgRib3RzGAIgAygLMgsuQm90TWVzc2FnZSJ6",
+          "CgpCb3RNZXNzYWdlEg0KBWluZGV4GAEgASgEEg4KBmNvb3JkWBgCIAEoDRIO",
+          "CgZjb29yZFkYAyABKA0SDgoGZW5lcmd5GAQgASgNEg4KBmdlbm9tZRgFIAEo",
+          "DBIdCgZvcmdhbnMYBiADKAsyDS5Pcmdhbk1lc3NhZ2UiagoMT3JnYW5NZXNz",
+          "YWdlEhYKDnBhcmVudEJvdEluZGV4GAEgASgEEhIKCm9yZ2FuSW5kZXgYAiAB",
+          "KAQSDgoGY29vcmRYGAMgASgNEg4KBmNvb3JkWRgEIAEoDRIOCgZnZW5vbWUY",
+          "BSABKAxCCFoGLjttYWluYgZwcm90bzM="));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { },
         new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-          new pbr::GeneratedClrTypeInfo(typeof(global::ChunkMessage), global::ChunkMessage.Parser, new[]{ "ChunkIndex", "Ticks" }, null, null, null, null),
+          new pbr::GeneratedClrTypeInfo(typeof(global::ChunkMessage), global::ChunkMessage.Parser, new[]{ "ChunkIndex", "WorldSizeX", "WorldSizeY", "Ticks" }, null, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::TickMessage), global::TickMessage.Parser, new[]{ "TickIndex", "Bots" }, null, null, null, null),
-          new pbr::GeneratedClrTypeInfo(typeof(global::BotMessage), global::BotMessage.Parser, new[]{ "Index", "CoordX", "CoordY", "Energy", "Genome" }, null, null, null, null)
+          new pbr::GeneratedClrTypeInfo(typeof(global::BotMessage), global::BotMessage.Parser, new[]{ "Index", "CoordX", "CoordY", "Energy", "Genome", "Organs" }, null, null, null, null),
+          new pbr::GeneratedClrTypeInfo(typeof(global::OrganMessage), global::OrganMessage.Parser, new[]{ "ParentBotIndex", "OrganIndex", "CoordX", "CoordY", "Genome" }, null, null, null, null)
         }));
   }
   #endregion
@@ -66,6 +71,8 @@ public sealed partial class ChunkMessage : pb::IMessage<ChunkMessage> {
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public ChunkMessage(ChunkMessage other) : this() {
     chunkIndex_ = other.chunkIndex_;
+    worldSizeX_ = other.worldSizeX_;
+    worldSizeY_ = other.worldSizeY_;
     ticks_ = other.ticks_.Clone();
     _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
   }
@@ -86,10 +93,32 @@ public sealed partial class ChunkMessage : pb::IMessage<ChunkMessage> {
     }
   }
 
+  /// <summary>Field number for the "worldSizeX" field.</summary>
+  public const int WorldSizeXFieldNumber = 2;
+  private uint worldSizeX_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public uint WorldSizeX {
+    get { return worldSizeX_; }
+    set {
+      worldSizeX_ = value;
+    }
+  }
+
+  /// <summary>Field number for the "worldSizeY" field.</summary>
+  public const int WorldSizeYFieldNumber = 3;
+  private uint worldSizeY_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public uint WorldSizeY {
+    get { return worldSizeY_; }
+    set {
+      worldSizeY_ = value;
+    }
+  }
+
   /// <summary>Field number for the "ticks" field.</summary>
-  public const int TicksFieldNumber = 2;
+  public const int TicksFieldNumber = 4;
   private static readonly pb::FieldCodec<global::TickMessage> _repeated_ticks_codec
-      = pb::FieldCodec.ForMessage(18, global::TickMessage.Parser);
+      = pb::FieldCodec.ForMessage(34, global::TickMessage.Parser);
   private readonly pbc::RepeatedField<global::TickMessage> ticks_ = new pbc::RepeatedField<global::TickMessage>();
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public pbc::RepeatedField<global::TickMessage> Ticks {
@@ -110,6 +139,8 @@ public sealed partial class ChunkMessage : pb::IMessage<ChunkMessage> {
       return true;
     }
     if (ChunkIndex != other.ChunkIndex) return false;
+    if (WorldSizeX != other.WorldSizeX) return false;
+    if (WorldSizeY != other.WorldSizeY) return false;
     if(!ticks_.Equals(other.ticks_)) return false;
     return Equals(_unknownFields, other._unknownFields);
   }
@@ -118,6 +149,8 @@ public sealed partial class ChunkMessage : pb::IMessage<ChunkMessage> {
   public override int GetHashCode() {
     int hash = 1;
     if (ChunkIndex != 0) hash ^= ChunkIndex.GetHashCode();
+    if (WorldSizeX != 0) hash ^= WorldSizeX.GetHashCode();
+    if (WorldSizeY != 0) hash ^= WorldSizeY.GetHashCode();
     hash ^= ticks_.GetHashCode();
     if (_unknownFields != null) {
       hash ^= _unknownFields.GetHashCode();
@@ -136,6 +169,14 @@ public sealed partial class ChunkMessage : pb::IMessage<ChunkMessage> {
       output.WriteRawTag(8);
       output.WriteUInt32(ChunkIndex);
     }
+    if (WorldSizeX != 0) {
+      output.WriteRawTag(16);
+      output.WriteUInt32(WorldSizeX);
+    }
+    if (WorldSizeY != 0) {
+      output.WriteRawTag(24);
+      output.WriteUInt32(WorldSizeY);
+    }
     ticks_.WriteTo(output, _repeated_ticks_codec);
     if (_unknownFields != null) {
       _unknownFields.WriteTo(output);
@@ -147,6 +188,12 @@ public sealed partial class ChunkMessage : pb::IMessage<ChunkMessage> {
     int size = 0;
     if (ChunkIndex != 0) {
       size += 1 + pb::CodedOutputStream.ComputeUInt32Size(ChunkIndex);
+    }
+    if (WorldSizeX != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeUInt32Size(WorldSizeX);
+    }
+    if (WorldSizeY != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeUInt32Size(WorldSizeY);
     }
     size += ticks_.CalculateSize(_repeated_ticks_codec);
     if (_unknownFields != null) {
@@ -162,6 +209,12 @@ public sealed partial class ChunkMessage : pb::IMessage<ChunkMessage> {
     }
     if (other.ChunkIndex != 0) {
       ChunkIndex = other.ChunkIndex;
+    }
+    if (other.WorldSizeX != 0) {
+      WorldSizeX = other.WorldSizeX;
+    }
+    if (other.WorldSizeY != 0) {
+      WorldSizeY = other.WorldSizeY;
     }
     ticks_.Add(other.ticks_);
     _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -179,7 +232,15 @@ public sealed partial class ChunkMessage : pb::IMessage<ChunkMessage> {
           ChunkIndex = input.ReadUInt32();
           break;
         }
-        case 18: {
+        case 16: {
+          WorldSizeX = input.ReadUInt32();
+          break;
+        }
+        case 24: {
+          WorldSizeY = input.ReadUInt32();
+          break;
+        }
+        case 34: {
           ticks_.AddEntriesFrom(input, _repeated_ticks_codec);
           break;
         }
@@ -368,6 +429,7 @@ public sealed partial class BotMessage : pb::IMessage<BotMessage> {
     coordY_ = other.coordY_;
     energy_ = other.energy_;
     genome_ = other.genome_;
+    organs_ = other.organs_.Clone();
     _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
   }
 
@@ -431,6 +493,16 @@ public sealed partial class BotMessage : pb::IMessage<BotMessage> {
     }
   }
 
+  /// <summary>Field number for the "organs" field.</summary>
+  public const int OrgansFieldNumber = 6;
+  private static readonly pb::FieldCodec<global::OrganMessage> _repeated_organs_codec
+      = pb::FieldCodec.ForMessage(50, global::OrganMessage.Parser);
+  private readonly pbc::RepeatedField<global::OrganMessage> organs_ = new pbc::RepeatedField<global::OrganMessage>();
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public pbc::RepeatedField<global::OrganMessage> Organs {
+    get { return organs_; }
+  }
+
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public override bool Equals(object other) {
     return Equals(other as BotMessage);
@@ -449,6 +521,7 @@ public sealed partial class BotMessage : pb::IMessage<BotMessage> {
     if (CoordY != other.CoordY) return false;
     if (Energy != other.Energy) return false;
     if (Genome != other.Genome) return false;
+    if(!organs_.Equals(other.organs_)) return false;
     return Equals(_unknownFields, other._unknownFields);
   }
 
@@ -460,6 +533,7 @@ public sealed partial class BotMessage : pb::IMessage<BotMessage> {
     if (CoordY != 0) hash ^= CoordY.GetHashCode();
     if (Energy != 0) hash ^= Energy.GetHashCode();
     if (Genome.Length != 0) hash ^= Genome.GetHashCode();
+    hash ^= organs_.GetHashCode();
     if (_unknownFields != null) {
       hash ^= _unknownFields.GetHashCode();
     }
@@ -493,6 +567,7 @@ public sealed partial class BotMessage : pb::IMessage<BotMessage> {
       output.WriteRawTag(42);
       output.WriteBytes(Genome);
     }
+    organs_.WriteTo(output, _repeated_organs_codec);
     if (_unknownFields != null) {
       _unknownFields.WriteTo(output);
     }
@@ -516,6 +591,7 @@ public sealed partial class BotMessage : pb::IMessage<BotMessage> {
     if (Genome.Length != 0) {
       size += 1 + pb::CodedOutputStream.ComputeBytesSize(Genome);
     }
+    size += organs_.CalculateSize(_repeated_organs_codec);
     if (_unknownFields != null) {
       size += _unknownFields.CalculateSize();
     }
@@ -542,6 +618,7 @@ public sealed partial class BotMessage : pb::IMessage<BotMessage> {
     if (other.Genome.Length != 0) {
       Genome = other.Genome;
     }
+    organs_.Add(other.organs_);
     _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
   }
 
@@ -567,6 +644,251 @@ public sealed partial class BotMessage : pb::IMessage<BotMessage> {
         }
         case 32: {
           Energy = input.ReadUInt32();
+          break;
+        }
+        case 42: {
+          Genome = input.ReadBytes();
+          break;
+        }
+        case 50: {
+          organs_.AddEntriesFrom(input, _repeated_organs_codec);
+          break;
+        }
+      }
+    }
+  }
+
+}
+
+public sealed partial class OrganMessage : pb::IMessage<OrganMessage> {
+  private static readonly pb::MessageParser<OrganMessage> _parser = new pb::MessageParser<OrganMessage>(() => new OrganMessage());
+  private pb::UnknownFieldSet _unknownFields;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public static pb::MessageParser<OrganMessage> Parser { get { return _parser; } }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public static pbr::MessageDescriptor Descriptor {
+    get { return global::DataReflection.Descriptor.MessageTypes[3]; }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  pbr::MessageDescriptor pb::IMessage.Descriptor {
+    get { return Descriptor; }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public OrganMessage() {
+    OnConstruction();
+  }
+
+  partial void OnConstruction();
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public OrganMessage(OrganMessage other) : this() {
+    parentBotIndex_ = other.parentBotIndex_;
+    organIndex_ = other.organIndex_;
+    coordX_ = other.coordX_;
+    coordY_ = other.coordY_;
+    genome_ = other.genome_;
+    _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public OrganMessage Clone() {
+    return new OrganMessage(this);
+  }
+
+  /// <summary>Field number for the "parentBotIndex" field.</summary>
+  public const int ParentBotIndexFieldNumber = 1;
+  private ulong parentBotIndex_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public ulong ParentBotIndex {
+    get { return parentBotIndex_; }
+    set {
+      parentBotIndex_ = value;
+    }
+  }
+
+  /// <summary>Field number for the "organIndex" field.</summary>
+  public const int OrganIndexFieldNumber = 2;
+  private ulong organIndex_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public ulong OrganIndex {
+    get { return organIndex_; }
+    set {
+      organIndex_ = value;
+    }
+  }
+
+  /// <summary>Field number for the "coordX" field.</summary>
+  public const int CoordXFieldNumber = 3;
+  private uint coordX_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public uint CoordX {
+    get { return coordX_; }
+    set {
+      coordX_ = value;
+    }
+  }
+
+  /// <summary>Field number for the "coordY" field.</summary>
+  public const int CoordYFieldNumber = 4;
+  private uint coordY_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public uint CoordY {
+    get { return coordY_; }
+    set {
+      coordY_ = value;
+    }
+  }
+
+  /// <summary>Field number for the "genome" field.</summary>
+  public const int GenomeFieldNumber = 5;
+  private pb::ByteString genome_ = pb::ByteString.Empty;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public pb::ByteString Genome {
+    get { return genome_; }
+    set {
+      genome_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+    }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override bool Equals(object other) {
+    return Equals(other as OrganMessage);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public bool Equals(OrganMessage other) {
+    if (ReferenceEquals(other, null)) {
+      return false;
+    }
+    if (ReferenceEquals(other, this)) {
+      return true;
+    }
+    if (ParentBotIndex != other.ParentBotIndex) return false;
+    if (OrganIndex != other.OrganIndex) return false;
+    if (CoordX != other.CoordX) return false;
+    if (CoordY != other.CoordY) return false;
+    if (Genome != other.Genome) return false;
+    return Equals(_unknownFields, other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override int GetHashCode() {
+    int hash = 1;
+    if (ParentBotIndex != 0UL) hash ^= ParentBotIndex.GetHashCode();
+    if (OrganIndex != 0UL) hash ^= OrganIndex.GetHashCode();
+    if (CoordX != 0) hash ^= CoordX.GetHashCode();
+    if (CoordY != 0) hash ^= CoordY.GetHashCode();
+    if (Genome.Length != 0) hash ^= Genome.GetHashCode();
+    if (_unknownFields != null) {
+      hash ^= _unknownFields.GetHashCode();
+    }
+    return hash;
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override string ToString() {
+    return pb::JsonFormatter.ToDiagnosticString(this);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void WriteTo(pb::CodedOutputStream output) {
+    if (ParentBotIndex != 0UL) {
+      output.WriteRawTag(8);
+      output.WriteUInt64(ParentBotIndex);
+    }
+    if (OrganIndex != 0UL) {
+      output.WriteRawTag(16);
+      output.WriteUInt64(OrganIndex);
+    }
+    if (CoordX != 0) {
+      output.WriteRawTag(24);
+      output.WriteUInt32(CoordX);
+    }
+    if (CoordY != 0) {
+      output.WriteRawTag(32);
+      output.WriteUInt32(CoordY);
+    }
+    if (Genome.Length != 0) {
+      output.WriteRawTag(42);
+      output.WriteBytes(Genome);
+    }
+    if (_unknownFields != null) {
+      _unknownFields.WriteTo(output);
+    }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public int CalculateSize() {
+    int size = 0;
+    if (ParentBotIndex != 0UL) {
+      size += 1 + pb::CodedOutputStream.ComputeUInt64Size(ParentBotIndex);
+    }
+    if (OrganIndex != 0UL) {
+      size += 1 + pb::CodedOutputStream.ComputeUInt64Size(OrganIndex);
+    }
+    if (CoordX != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeUInt32Size(CoordX);
+    }
+    if (CoordY != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeUInt32Size(CoordY);
+    }
+    if (Genome.Length != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeBytesSize(Genome);
+    }
+    if (_unknownFields != null) {
+      size += _unknownFields.CalculateSize();
+    }
+    return size;
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void MergeFrom(OrganMessage other) {
+    if (other == null) {
+      return;
+    }
+    if (other.ParentBotIndex != 0UL) {
+      ParentBotIndex = other.ParentBotIndex;
+    }
+    if (other.OrganIndex != 0UL) {
+      OrganIndex = other.OrganIndex;
+    }
+    if (other.CoordX != 0) {
+      CoordX = other.CoordX;
+    }
+    if (other.CoordY != 0) {
+      CoordY = other.CoordY;
+    }
+    if (other.Genome.Length != 0) {
+      Genome = other.Genome;
+    }
+    _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void MergeFrom(pb::CodedInputStream input) {
+    uint tag;
+    while ((tag = input.ReadTag()) != 0) {
+      switch(tag) {
+        default:
+          _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+          break;
+        case 8: {
+          ParentBotIndex = input.ReadUInt64();
+          break;
+        }
+        case 16: {
+          OrganIndex = input.ReadUInt64();
+          break;
+        }
+        case 24: {
+          CoordX = input.ReadUInt32();
+          break;
+        }
+        case 32: {
+          CoordY = input.ReadUInt32();
           break;
         }
         case 42: {

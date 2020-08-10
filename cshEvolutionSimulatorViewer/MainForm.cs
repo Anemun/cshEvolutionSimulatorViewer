@@ -17,8 +17,8 @@ namespace cshEvolutionSimulatorViewer
 
         uint botPixelSize = 10;
         uint botPixelSpacing = 1;
-        uint worldSizeX_cells = 400;
-        uint worldSizeY_cells = 500;
+        uint worldSizeX_cells;
+        uint worldSizeY_cells;
         uint worldSizeX_pixels;
         uint worldSizeY_pixels;
 
@@ -33,7 +33,9 @@ namespace cshEvolutionSimulatorViewer
         SFML.System.Clock clock;
         uint drawCalls;
         uint FPS;
+        uint FPScalcInterval = 3;
         float timeSinceClock;
+
 
         public MainForm()
         {
@@ -46,12 +48,14 @@ namespace cshEvolutionSimulatorViewer
 
         private void button_startSimulation_Click(object sender, EventArgs e)
         {
+            button_startSimulation.Enabled = false;
             tickIndex = 0;
             clock = new SFML.System.Clock();
             timeSinceClock = 0f;
             drawCalls = 0;
+            SFML.Graphics.Color backgroundColor = new SFML.Graphics.Color(120, 120, 120);
 
-            if (chunkFolderPath == null)
+            if ((chunkFolderPath == null) || (currentChunk == null))
             {
                 label_loadData.Text = "LOAD SOME DATA before starting";
                 return;
@@ -64,6 +68,8 @@ namespace cshEvolutionSimulatorViewer
             drawingSurface.PreviewKeyDown += new PreviewKeyDownEventHandler(MoveView);
             drawingSurface.MouseWheel += new MouseEventHandler(ZoomView);
 
+            worldSizeX_cells = currentChunk.WorldSizeX;
+            worldSizeY_cells = currentChunk.WorldSizeY;
             worldSizeX_pixels = worldSizeX_cells * (botPixelSize + botPixelSpacing);
             worldSizeY_pixels = worldSizeY_cells * (botPixelSize + botPixelSpacing);
 
@@ -78,6 +84,8 @@ namespace cshEvolutionSimulatorViewer
             while (mainForm.Visible) // loop while the window is open
             {
                 drawingSurface.Focus();
+                worldSizeX_cells = currentChunk.WorldSizeX;
+                worldSizeY_cells = currentChunk.WorldSizeY;
                 tick = currentChunk.Ticks[tickIndex];
                 UpdateStats(tick);
                 vertices = GetVerticesForCurrentTick(tick);
@@ -85,7 +93,7 @@ namespace cshEvolutionSimulatorViewer
                 Application.DoEvents(); // handle form events
                 renderwindow.DispatchEvents(); // handle SFML events - NOTE this is still required when SFML is hosted in another window                
                 renderwindow.SetView(view);
-                renderwindow.Clear(new SFML.Graphics.Color(120, 120, 120)); // clear our SFML RenderWindow
+                renderwindow.Clear(backgroundColor); // clear our SFML RenderWindow and fill it with color
                 renderwindow.Draw(vertices);
                 renderwindow.Display(); // display what SFML has drawn to the screen
 
@@ -125,6 +133,8 @@ namespace cshEvolutionSimulatorViewer
                 vertices[v2] = new Vertex(new SFML.System.Vector2f(x * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize, y * (botPixelSpacing + botPixelSize) + botPixelSpacing), new SFML.Graphics.Color(Color.Blue));
                 vertices[v3] = new Vertex(new SFML.System.Vector2f(x * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize, y * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize), new SFML.Graphics.Color(Color.Blue));
                 vertices[v4] = new Vertex(new SFML.System.Vector2f(x * (botPixelSpacing + botPixelSize) + botPixelSpacing, y * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize), new SFML.Graphics.Color(Color.Blue));
+
+                
             }
 
             return vertices;
@@ -192,24 +202,23 @@ namespace cshEvolutionSimulatorViewer
         {
             label_tickIndex.Text = (tickIndex + currentChunk.Ticks.Count*chunkIndex).ToString();
             label_botCount.Text = tick.Bots.Count.ToString();
+            label_worldSize.Text = currentChunk.WorldSizeX + ":" + currentChunk.WorldSizeY;
 
             drawCalls++;
             label_tps.Text = FPS.ToString();
 
             timeSinceClock += clock.Restart().AsSeconds();
-            if (timeSinceClock >= 1)
+            if (timeSinceClock >= FPScalcInterval)
             {
                 timeSinceClock = 0f;
-                FPS = drawCalls;
+                FPS = drawCalls / FPScalcInterval;
                 drawCalls = 0;
             }
         }
-        
+
         private void LoadChunks()
         {
-            
-            currentChunk = ProtobufWorker.LoadNextChunk(chunkFolderPath, chunkIndex);
-            //currentChunk = ProtobufWorker.LoadNextChunk(chunkIndex + 1);
+            currentChunk = ProtobufWorker.LoadNextChunk(chunkFolderPath, chunkIndex);            
         }
 
         private void button_setPath_Click(object sender, EventArgs e)
@@ -353,9 +362,8 @@ namespace cshEvolutionSimulatorViewer
             //        map[i+j*w] = new Vertex()
             //    }
         }
-        #endregion
 
-        
+        #endregion
     }
 
     public class DrawingSurface : Control
