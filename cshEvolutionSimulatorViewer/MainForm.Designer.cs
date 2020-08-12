@@ -33,16 +33,18 @@
             this.button_setPath = new System.Windows.Forms.Button();
             this.button_startSimulation = new System.Windows.Forms.Button();
             this.panel_botData = new System.Windows.Forms.Panel();
+            this.label_worldSize_title = new System.Windows.Forms.Label();
             this.label_tps_Title = new System.Windows.Forms.Label();
             this.label_botCount_Title = new System.Windows.Forms.Label();
             this.label_tickIndex_Title = new System.Windows.Forms.Label();
             this.label_tps = new System.Windows.Forms.Label();
+            this.label_worldSize = new System.Windows.Forms.Label();
             this.label_botCount = new System.Windows.Forms.Label();
             this.label_tickIndex = new System.Windows.Forms.Label();
             this.panel_view = new System.Windows.Forms.Panel();
             this.dialog_loadData = new System.Windows.Forms.FolderBrowserDialog();
-            this.label_worldSize_title = new System.Windows.Forms.Label();
-            this.label_worldSize = new System.Windows.Forms.Label();
+            this.panel_genome = new System.Windows.Forms.Panel();
+            this.button_showGenome = new System.Windows.Forms.Button();
             this.panel_controls.SuspendLayout();
             this.panel_botData.SuspendLayout();
             this.SuspendLayout();
@@ -95,6 +97,8 @@
             this.panel_botData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel_botData.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_botData.Controls.Add(this.button_showGenome);
+            this.panel_botData.Controls.Add(this.panel_genome);
             this.panel_botData.Controls.Add(this.label_worldSize_title);
             this.panel_botData.Controls.Add(this.label_tps_Title);
             this.panel_botData.Controls.Add(this.label_botCount_Title);
@@ -107,6 +111,16 @@
             this.panel_botData.Name = "panel_botData";
             this.panel_botData.Size = new System.Drawing.Size(354, 658);
             this.panel_botData.TabIndex = 2;
+            // 
+            // label_worldSize_title
+            // 
+            this.label_worldSize_title.AutoSize = true;
+            this.label_worldSize_title.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.label_worldSize_title.Location = new System.Drawing.Point(3, 26);
+            this.label_worldSize_title.Name = "label_worldSize_title";
+            this.label_worldSize_title.Size = new System.Drawing.Size(59, 13);
+            this.label_worldSize_title.TabIndex = 2;
+            this.label_worldSize_title.Text = "World size:";
             // 
             // label_tps_Title
             // 
@@ -152,6 +166,17 @@
             this.label_tps.Text = "ticks/s";
             this.label_tps.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // label_worldSize
+            // 
+            this.label_worldSize.AutoSize = true;
+            this.label_worldSize.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.label_worldSize.Location = new System.Drawing.Point(74, 26);
+            this.label_worldSize.Name = "label_worldSize";
+            this.label_worldSize.Size = new System.Drawing.Size(52, 13);
+            this.label_worldSize.TabIndex = 0;
+            this.label_worldSize.Text = "worldSize";
+            this.label_worldSize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // label_botCount
             // 
             this.label_botCount.AutoSize = true;
@@ -185,26 +210,22 @@
             this.panel_view.Size = new System.Drawing.Size(800, 935);
             this.panel_view.TabIndex = 3;
             // 
-            // label_worldSize_title
+            // panel_genome
             // 
-            this.label_worldSize_title.AutoSize = true;
-            this.label_worldSize_title.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.label_worldSize_title.Location = new System.Drawing.Point(3, 26);
-            this.label_worldSize_title.Name = "label_worldSize_title";
-            this.label_worldSize_title.Size = new System.Drawing.Size(59, 13);
-            this.label_worldSize_title.TabIndex = 2;
-            this.label_worldSize_title.Text = "World size:";
+            this.panel_genome.Location = new System.Drawing.Point(4, 315);
+            this.panel_genome.Name = "panel_genome";
+            this.panel_genome.Size = new System.Drawing.Size(345, 338);
+            this.panel_genome.TabIndex = 3;
             // 
-            // label_worldSize
+            // button_showGenome
             // 
-            this.label_worldSize.AutoSize = true;
-            this.label_worldSize.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.label_worldSize.Location = new System.Drawing.Point(74, 26);
-            this.label_worldSize.Name = "label_worldSize";
-            this.label_worldSize.Size = new System.Drawing.Size(52, 13);
-            this.label_worldSize.TabIndex = 0;
-            this.label_worldSize.Text = "worldSize";
-            this.label_worldSize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_showGenome.Location = new System.Drawing.Point(274, 286);
+            this.button_showGenome.Name = "button_showGenome";
+            this.button_showGenome.Size = new System.Drawing.Size(75, 23);
+            this.button_showGenome.TabIndex = 4;
+            this.button_showGenome.Text = "Genome";
+            this.button_showGenome.UseVisualStyleBackColor = true;
+            this.button_showGenome.Click += new System.EventHandler(this.button_showGenome_Click);
             // 
             // MainForm
             // 
@@ -242,6 +263,8 @@
         private System.Windows.Forms.FolderBrowserDialog dialog_loadData;
         private System.Windows.Forms.Label label_worldSize_title;
         private System.Windows.Forms.Label label_worldSize;
+        private System.Windows.Forms.Panel panel_genome;
+        private System.Windows.Forms.Button button_showGenome;
     }
 }
 
