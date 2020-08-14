@@ -246,10 +246,10 @@ namespace cshEvolutionSimulatorViewer
 
             foreach (GraphNode node in nodes)
             {
-                graph.AddNode(node.genomePointer + ":" + node.name);                
+                graph.AddNode(node.genomePointer);                
             }
             ////create the graph content 
-            graph.AddEdge("A", "B");
+            graph.AddEdge("1", "2");
             //graph.AddEdge("B", "C");
             //graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
             //graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
@@ -261,7 +261,7 @@ namespace cshEvolutionSimulatorViewer
             ////this.SuspendLayout();
             viewer.Dock = DockStyle.Fill;
             //this.Controls.Add(viewer);
-            viewer.Parent = panel_genome;
+            viewer.Parent = panel_view;
             ////this.ResumeLayout();
         }
 
