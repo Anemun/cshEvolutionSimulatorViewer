@@ -73,7 +73,7 @@ namespace cshEvolutionSimulatorViewer
                   if (newPointer != -1) 
                   {   
                       // если находим, то добавляем её в стэк
-                      pointerStack.Add(newPointer)       
+                      pointerStack.Add(newPointer);       
                   } 
                 }
                 pointerStack.Remove(0);
@@ -142,34 +142,35 @@ namespace cshEvolutionSimulatorViewer
         //         }   
         //         node.links.Add(link);                   
         //     }
-        // }        
+        // } 
+        private int LoopValue(int value, int min, int max)
+        {
+          // LoopValue returns value, looped between min (included) and max (not included)
+          // LoopValue for example, val=6, min=0, max=10 returns 6
+          // LoopValue for example, val=0, min=0, max=10 returns 0
+          // LoopValue for example, val=10, min=0, max=10 returns 0
+          // LoopValue for example, val=11, min=0, max=10 returns 1
+          // LoopValue for example, val=12, min=-10, max=10 returns -8
+          // LoopValue for example, val=5, min=10, max=15 returns 
+
+          if (min == max) {
+            return min;
+          }
+
+          if (value < min) {
+            //throw new Exception e {"Not implemented"};
+            //value = max - (value % max)
+          }
+
+          if (value >= max) {
+            value = min + (value % max);
+          }
+
+          return value;
+        }       
     }
 
-    private int LoopValue(int value, int min, int max)
-    {
-      // LoopValue returns value, looped between min (included) and max (not included)
-      // LoopValue for example, val=6, min=0, max=10 returns 6
-      // LoopValue for example, val=0, min=0, max=10 returns 0
-      // LoopValue for example, val=10, min=0, max=10 returns 0
-      // LoopValue for example, val=11, min=0, max=10 returns 1
-      // LoopValue for example, val=12, min=-10, max=10 returns -8
-      // LoopValue for example, val=5, min=10, max=15 returns 
-
-      if (min == max) {
-        return min
-      }
-
-      if value < min {
-        throw "Not implemented";
-        //value = max - (value % max)
-      }
-
-      if (value >= max) {
-        value = min + (value % max)
-      }
-
-      return value
-    }
+    
 
     public class GraphNode
     {
@@ -205,7 +206,7 @@ namespace cshEvolutionSimulatorViewer
             this.name = name;
             this.pointerIncrement = pointerIncrement;
         }
-        string name;
-        int pointerIncrement;
+        public string name;
+        public int pointerIncrement;
     }
 }
