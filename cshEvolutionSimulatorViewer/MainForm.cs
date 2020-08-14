@@ -260,6 +260,8 @@ namespace cshEvolutionSimulatorViewer
             //Microsoft.Msagl.Drawing.Node c = graph.FindNode("C");
             //c.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
             //c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
+            graph.Attr.MinimalWidth = 100;
+            graph.Attr.MinimalHeight = 100;
             viewer.Graph = graph;
             ////this.SuspendLayout();
             viewer.Dock = DockStyle.Fill;
