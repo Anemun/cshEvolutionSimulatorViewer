@@ -38,7 +38,7 @@ namespace cshEvolutionSimulatorViewer
                       // для каждого варианта исполнения мы делаем новую связь для ноды на графике
                       GraphLink link = new GraphLink();
                       link.origin = currentPointer;
-                      link.name = option.name                      
+                      link.name = option.name;                      
                       //SearchTargetThroughPointers(genome, currentPointer, option.pointerIncrement, ref node, ref link)     
 
                       // если цель варианта исполнения содержит команду, а не просто указатель
