@@ -177,7 +177,7 @@ namespace cshEvolutionSimulatorViewer
     {
         public GraphNode() 
         {
-          links = new List<GraphLink> links();
+          links = new List<GraphLink>();
         }
         public string name;
         public int genomePointer;
