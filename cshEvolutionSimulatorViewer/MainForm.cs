@@ -246,7 +246,10 @@ namespace cshEvolutionSimulatorViewer
 
             foreach (GraphNode node in nodes)
             {
-                graph.AddNode(node.genomePointer);                
+                graph.AddNode(node.genomePointer.ToString());
+                foreach (GraphLink link in node.links) {
+                  graph.AddEdge(link.origin.ToString(), link.target.ToString(), link.name)
+                }                
             }
             ////create the graph content 
             graph.AddEdge("1", "2");
