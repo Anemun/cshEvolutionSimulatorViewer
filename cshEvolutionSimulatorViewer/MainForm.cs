@@ -249,7 +249,7 @@ namespace cshEvolutionSimulatorViewer
                 graph.AddNode(node.genomePointer + ":" + node.name);                
             }
             ////create the graph content 
-            //graph.AddEdge("A", "B");
+            graph.AddEdge("A", "B");
             //graph.AddEdge("B", "C");
             //graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
             //graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
