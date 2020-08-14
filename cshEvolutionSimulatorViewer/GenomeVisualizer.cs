@@ -25,7 +25,7 @@ namespace cshEvolutionSimulatorViewer
             int i = 0;
             while ((pointerStack.Count > 0) && (i < 128))
             {
-                currentPointer = pointerStack[0];                                         // берём первый указатель из стэка указателей
+                int currentPointer = pointerStack[0];                                         // берём первый указатель из стэка указателей
                 command = commands.Find(x => x.genomeValue == genome[currentPointer]);    
                 // читаем значение генома под этим указателем. Значение либо определяет команду и двигает указатель, либо просто двигает указатель
                 if (command != null)    // если такая команда есть
@@ -76,13 +76,13 @@ namespace cshEvolutionSimulatorViewer
                       pointerStack.Add(newPointer)       
                   } 
                 }
-                pointerStack[0].Remove();
+                pointerStack.Remove(0);
                 i++;
             }
             return nodes;
         }
 
-        private void FindPointerForNextCommand(int[] genome, int currentPointer, int increment = 0)
+        private int FindPointerForNextCommand(int[] genome, int currentPointer, int increment = 0)
         {          
           int tempPointer = LoopValue(currentPointer + genome[LoopValue(currentPointer+increment, 0, 64)], 0, 64);
           // то мы плюсуем указатель варианта к текущему указателю и смотрим снова. Так n раз максимум.
@@ -99,7 +99,7 @@ namespace cshEvolutionSimulatorViewer
           return -1;
         }
 
-        private DefineCommands()      // TODO: Переделать в загрузку из текстового файла или что-то такое
+        private void DefineCommands()      // TODO: Переделать в загрузку из текстового файла или что-то такое
         {
             commands = new List<Command>();
             Command commandStay = new Command("STAY", 0, new List<CommandOptions> { new CommandOptions("staying...", 1) });
@@ -145,7 +145,7 @@ namespace cshEvolutionSimulatorViewer
         // }        
     }
 
-    private void LoopValue(int value, int min, int max)
+    private int LoopValue(int value, int min, int max)
     {
       // LoopValue returns value, looped between min (included) and max (not included)
       // LoopValue for example, val=6, min=0, max=10 returns 6
@@ -155,15 +155,16 @@ namespace cshEvolutionSimulatorViewer
       // LoopValue for example, val=12, min=-10, max=10 returns -8
       // LoopValue for example, val=5, min=10, max=15 returns 
 
-      if min == max {
+      if (min == max) {
         return min
       }
 
-      // if value < min {
-      //   value = max - (value % max)
-      // }
+      if value < min {
+        throw "Not implemented";
+        //value = max - (value % max)
+      }
 
-      if value >= max {
+      if (value >= max) {
         value = min + (value % max)
       }
 
