@@ -32,7 +32,8 @@ namespace cshEvolutionSimulatorViewer
                 {                    
                     GraphNode node = new GraphNode();     // создаём новую ноду для графика
                     node.name = command.name;
-                    node.genomePointer = currentPointer;                    
+                    node.genomePointer = currentPointer;
+                    
                     foreach (CommandOptions option in command.options)        // смотрим, какие есть варианты исполнения у этой команды
                     {
                       // для каждого варианта исполнения мы делаем новую связь для ноды на графике
@@ -174,6 +175,10 @@ namespace cshEvolutionSimulatorViewer
 
     public class GraphNode
     {
+        public GraphNode() 
+        {
+          links = new List<GraphLink> links();
+        }
         public string name;
         public int genomePointer;
         public List<GraphLink> links;
