@@ -77,7 +77,7 @@ namespace cshEvolutionSimulatorViewer
                       pointerStack.Add(newPointer);       
                   } 
                 }
-                pointerStack.Remove(0);
+                pointerStack.RemoveAt(0);
                 i++;
             }
             return nodes;

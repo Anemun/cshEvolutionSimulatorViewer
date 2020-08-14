@@ -248,11 +248,11 @@ namespace cshEvolutionSimulatorViewer
             {
                 graph.AddNode(node.genomePointer.ToString());
                 foreach (GraphLink link in node.links) {
-                  graph.AddEdge(link.origin.ToString(), link.target.ToString(), link.name)
+                  graph.AddEdge(link.origin.ToString(), link.target.ToString(), link.name);
                 }                
             }
             ////create the graph content 
-            graph.AddEdge("1", "2");
+            //graph.AddEdge("1", "2");
             //graph.AddEdge("B", "C");
             //graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
             //graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
