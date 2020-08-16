@@ -80,7 +80,7 @@ namespace cshEvolutionSimulatorViewer
             renderwindow = new RenderWindow(drawingSurface.Handle); // creates our SFML RenderWindow on our surface control
 
             VertexArray verticesObjects;
-            Vertexarray verticesOrganLines;
+            VertexArray verticesOrganLines;
             TickMessage tick;
             // drawing loop
             while (mainForm.Visible) // loop while the window is open
@@ -188,10 +188,10 @@ namespace cshEvolutionSimulatorViewer
 
           vertexArray[v1] = new Vertex(new SFML.System.Vector2f(x1 * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize/2, 
                                                                 y1 * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize/2),
-                                                                new SMFL.Graphics.Color(Color.Black));
+                                                                new SFML.Graphics.Color(Color.Black));
           vertexArray[v2] = new Vertex(new SFML.System.Vector2f(x2 * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize/2, 
                                                                 y2 * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize/2),
-                                                                new SMFL.Graphics.Color(Color.Black));
+                                                                new SFML.Graphics.Color(Color.Black));
         }
 
         public void MoveView(object sender, PreviewKeyDownEventArgs e)
