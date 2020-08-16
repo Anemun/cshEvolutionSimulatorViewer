@@ -128,7 +128,7 @@ namespace cshEvolutionSimulatorViewer
             foreach (BotMessage bot in bots)
             {                
                 CreateObjectVerticesForCoord(ref objectVertices, bot.CoordX, bot.CoordY, Color.Blue);
-                foreach (OrganMessage organ in bot.organs) {
+                foreach (OrganMessage organ in bot.Organs) {
                     CreateObjectVerticesForCoord(ref objectVertices, organ.CoordX, organ.CoordY, Color.Red);
                 }
             }
@@ -142,8 +142,8 @@ namespace cshEvolutionSimulatorViewer
              VertexArray organLinesVertices = new VertexArray(PrimitiveType.Lines, worldSizeX_cells * worldSizeY_cells * 2);
              foreach (BotMessage bot in bots)
               {               
-                  if (bot.organs.Count > 0) 
-                    foreach (OrganMessage organ in bot.organs) {
+                  if (bot.Organs.Count > 0) 
+                    foreach (OrganMessage organ in bot.Organs) {
                         CreateOrganLinesVertices(ref organLinesVertices, bot, organ);
                     }
               }
