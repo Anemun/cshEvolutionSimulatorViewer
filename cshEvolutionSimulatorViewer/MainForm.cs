@@ -79,7 +79,8 @@ namespace cshEvolutionSimulatorViewer
             // initialize sfml
             renderwindow = new RenderWindow(drawingSurface.Handle); // creates our SFML RenderWindow on our surface control
 
-            VertexArray vertices;
+            VertexArray verticesObjects;
+            Vertexarray verticesOrganLines;
             TickMessage tick;
             // drawing loop
             while (mainForm.Visible) // loop while the window is open
@@ -89,13 +90,15 @@ namespace cshEvolutionSimulatorViewer
                 worldSizeY_cells = currentChunk.WorldSizeY;
                 tick = currentChunk.Ticks[tickIndex];
                 UpdateStats(tick);
-                vertices = GetVerticesForCurrentTick(tick);
+                verticesObjects = GetObjectVerticesForCurrentTick(tick);
+                verticesOrganLines = GetOgranLinesVerticesForCurrentTick(tick);
 
                 Application.DoEvents(); // handle form events
                 renderwindow.DispatchEvents(); // handle SFML events - NOTE this is still required when SFML is hosted in another window                
                 renderwindow.SetView(view);
                 renderwindow.Clear(backgroundColor); // clear our SFML RenderWindow and fill it with color
-                renderwindow.Draw(vertices);
+                renderwindow.Draw(verticesObjects);
+                renderwindow.Draw(verticesOrganLines);
                 renderwindow.Display(); // display what SFML has drawn to the screen
 
                 tickIndex++;
@@ -114,31 +117,81 @@ namespace cshEvolutionSimulatorViewer
             }
         }        
 
-        private VertexArray GetVerticesForCurrentTick(TickMessage tick)
+        private VertexArray GetObjectVerticesForCurrentTick(TickMessage tick)
         {
             BotMessage[] bots = new BotMessage[tick.Bots.Count];
             tick.Bots.CopyTo(bots,0);
 
-            VertexArray vertices = new VertexArray(PrimitiveType.Quads, worldSizeX_cells * worldSizeY_cells * 4);
+            VertexArray objectVertices = new VertexArray(PrimitiveType.Quads, worldSizeX_cells * worldSizeY_cells * 4);
+           
 
             foreach (BotMessage bot in bots)
-            {
-                uint x = bot.CoordX;
-                uint y = bot.CoordY;
-                uint tileIndex = x + y + y * (worldSizeX_cells - 1);
-                uint v1 = tileIndex * 3 + tileIndex;
-                uint v2 = tileIndex * 3 + tileIndex + 1;
-                uint v3 = tileIndex * 3 + tileIndex + 2;
-                uint v4 = tileIndex * 3 + tileIndex + 3;
-                vertices[v1] = new Vertex(new SFML.System.Vector2f(x * (botPixelSpacing + botPixelSize) + botPixelSpacing, y * (botPixelSpacing + botPixelSize) + botPixelSpacing), new SFML.Graphics.Color(Color.Blue));
-                vertices[v2] = new Vertex(new SFML.System.Vector2f(x * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize, y * (botPixelSpacing + botPixelSize) + botPixelSpacing), new SFML.Graphics.Color(Color.Blue));
-                vertices[v3] = new Vertex(new SFML.System.Vector2f(x * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize, y * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize), new SFML.Graphics.Color(Color.Blue));
-                vertices[v4] = new Vertex(new SFML.System.Vector2f(x * (botPixelSpacing + botPixelSize) + botPixelSpacing, y * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize), new SFML.Graphics.Color(Color.Blue));
-
-                
+            {                
+                CreateObjectVerticesForCoord(ref objectVertices, bot.CoordX, bot.CoordY, Color.Blue);
+                foreach (OrganMessage organ in bot.organs) {
+                    CreateObjectVerticesForCoord(ref objectVertices, organ.CoordX, organ.CoordY, Color.Red);
+                }
             }
+            return objectVertices;
+        }
 
-            return vertices;
+        private VertexArray GetOgranLinesVerticesForCurrentTick(TickMessage tick)
+        {
+             BotMessage[] bots = new BotMessage[tick.Bots.Count];
+             tick.Bots.CopyTo(bots,0); 
+             VertexArray organLinesVertices = new VertexArray(PrimitiveType.Lines, worldSizeX_cells * worldSizeY_cells * 2);
+             foreach (BotMessage bot in bots)
+              {               
+                  if (bot.organs.Count > 0) 
+                    foreach (OrganMessage organ in bot.organs) {
+                        CreateOrganLinesVertices(ref organLinesVertices, bot, organ);
+                    }
+              }
+              return organLinesVertices;
+        }
+
+        private void CreateObjectVerticesForCoord(ref VertexArray vertexArray, uint coordX, uint coordY, SFML.Graphics.Color color)     // TODO: create interface for bot/organ/object
+        {
+          uint x = coordX;
+          uint y = coordY;
+          uint tileIndex = x + y + y * (worldSizeX_cells - 1);  // здесь мы переводим индекс двумерого массива в индекс одномерного массива
+          // так как на каждый объект нам нужно 4 индекса, мы распределяем эти индексы по массиву. 
+          // Формула: [индекс объекта] * [кол-во индексов на объект-1] + [индекс объекта] + [порядковый номер индекса в объекте -1]
+          uint v1 = tileIndex * 3 + tileIndex;
+          uint v2 = tileIndex * 3 + tileIndex + 1;
+          uint v3 = tileIndex * 3 + tileIndex + 2;
+          uint v4 = tileIndex * 3 + tileIndex + 3;
+          
+          vertexArray[v1] = new Vertex(new SFML.System.Vector2f(x * (botPixelSpacing + botPixelSize) + botPixelSpacing, 
+                                                                y * (botPixelSpacing + botPixelSize) + botPixelSpacing), 
+                                                                new SFML.Graphics.Color(Color.Blue));
+          vertexArray[v2] = new Vertex(new SFML.System.Vector2f(x * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize, 
+                                                                y * (botPixelSpacing + botPixelSize) + botPixelSpacing), 
+                                                                new SFML.Graphics.Color(Color.Blue));
+          vertexArray[v3] = new Vertex(new SFML.System.Vector2f(x * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize, 
+                                                                y * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize), 
+                                                                new SFML.Graphics.Color(Color.Blue));
+          vertexArray[v4] = new Vertex(new SFML.System.Vector2f(x * (botPixelSpacing + botPixelSize) + botPixelSpacing, 
+                                                                y * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize), 
+                                                                new SFML.Graphics.Color(Color.Blue));
+        }
+
+        private void CreateOrganLinesVertices(ref VertexArray vertexArray, BotMessage bot, OrganMessage organ)
+        {
+          uint x1 = bot.CoordX;
+          uint x2 = organ.CoordX;
+          uint y1 = bot.CoordY;
+          uint y2 = organ.CoordY;
+          uint arrayIndex = x2 + y2 + y2 * (worldSizeX_cells - 1);          
+          uint v1 = arrayIndex + arrayIndex;
+          uint v2 = arrayIndex + arrayIndex + 1;
+
+          vertexArray[v1] = new Vertex(new SFML.System.Vector2f(x1 * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize/2, 
+                                                                y1 * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize/2),
+                                                                new SMFL.Graphics.Color(Color.Black));
+          vertexArray[v2] = new Vertex(new SFML.System.Vector2f(x2 * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize/2, 
+                                                                y2 * (botPixelSpacing + botPixelSize) + botPixelSpacing + botPixelSize/2),
+                                                                new SMFL.Graphics.Color(Color.Black));
         }
 
         public void MoveView(object sender, PreviewKeyDownEventArgs e)
@@ -240,8 +293,7 @@ namespace cshEvolutionSimulatorViewer
             GenomeVisualizer genomeVisualizer = new GenomeVisualizer();
             List<GraphNode> nodes = genomeVisualizer.analyseGenome();
 
-            Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();            
-            ////create a graph object 
+            Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer(); 
             Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
 
             foreach (GraphNode node in nodes)
@@ -251,23 +303,11 @@ namespace cshEvolutionSimulatorViewer
                   graph.AddEdge(link.origin.ToString(), link.target.ToString());
                 }                
             }
-            ////create the graph content 
-            //graph.AddEdge("1", "2");
-            //graph.AddEdge("B", "C");
-            //graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-            //graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
-            //graph.FindNode("B").Attr.FillColor = Microsoft.Msagl.Drawing.Color.MistyRose;
-            //Microsoft.Msagl.Drawing.Node c = graph.FindNode("C");
-            //c.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
-            //c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
             graph.Attr.MinimalWidth = 100;
             graph.Attr.MinimalHeight = 100;
             viewer.Graph = graph;
-            ////this.SuspendLayout();
             viewer.Dock = DockStyle.Fill;
-            //this.Controls.Add(viewer);
             viewer.Parent = panel_view;
-            ////this.ResumeLayout();
         }
 
         #region testCode
@@ -400,8 +440,6 @@ namespace cshEvolutionSimulatorViewer
         }
 
         #endregion
-
-        
     }
 
     public class DrawingSurface : Control
